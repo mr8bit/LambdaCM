@@ -1,9 +1,7 @@
 from django.contrib import admin
 from .models import *
 # Register your models here.
-from  blog.models import  SEO
-
-
+from  blog.models import SEO
 
 
 class SEO(admin.StackedInline):
@@ -15,16 +13,16 @@ class SEO(admin.StackedInline):
     )
     show_change_link = True
 
+
 class AdditionInfo(admin.StackedInline):
     model = AdditionInfo
     extra = 0
     show_change_link = True
 
 
-
 class EventAdmin(admin.ModelAdmin):
     model = Event
-    inlines = (AdditionInfo,SEO,)
+    inlines = (AdditionInfo, SEO,)
     fields = (
         'title',
         'start',
@@ -37,11 +35,14 @@ class EventAdmin(admin.ModelAdmin):
         'tags',
     )
 
+    class Media:
+        js = ['js/FB_CKEditor.js',
+              'js/ckeditor.js']
+
     def save_model(self, request, obj, form, change):
         obj.author = request.user
         obj.save()
 
 
-
-admin.site.register(Event,EventAdmin)
+admin.site.register(Event, EventAdmin)
 admin.site.register(EventLocation)
