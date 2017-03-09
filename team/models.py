@@ -26,25 +26,25 @@ class SocialNetwork(models.Model):
 
 
 class TeamManager(BaseUserManager):
-    def create_user(self, first_name,email,last_name, password=None):
+    def create_user(self, first_name, email, last_name, password=None):
         if not email:
             raise ValueError('Users must have an email address')
         user = self.model(
             email=self.normalize_email(email),
-            last_name=last_name,
-            first_name=first_name
+            last_name=self.last_name,
+            first_name=self.first_name
         )
 
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self,first_name, last_name,email, password):
+    def create_superuser(self, first_name, last_name, email, password):
         user = self.create_user(
             email,
             password=password,
-            last_name = last_name,
-            first_name=first_name
+            last_name=last_name,
+            first_name=first_name,
         )
         user.is_admin = True
         user.save(using=self._db)
@@ -76,7 +76,8 @@ class Member(AbstractBaseUser):
     objects = TeamManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name','last_name']
+    REQUIRED_FIELDS = ['first_name', 'last_name']
+
     class Meta:
         verbose_name = "Участника"
         verbose_name_plural = "Участники"
@@ -86,8 +87,6 @@ class Member(AbstractBaseUser):
 
     def __str__(self):
         return self.first_name + ' ' + self.last_name
-
-
 
     def get_short_name(self):
         return self.first_name
