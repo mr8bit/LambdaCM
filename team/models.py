@@ -78,7 +78,7 @@ class Member(AbstractBaseUser):
         verbose_name_plural = "Участники"
 
     def get_full_name(self):
-        if self.first_name:
+        if self.first_name and self.last_name :
             return self.first_name + ' ' + self.last_name
         else:
             return self.email
