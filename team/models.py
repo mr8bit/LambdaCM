@@ -31,8 +31,8 @@ class TeamManager(BaseUserManager):
             raise ValueError('Users must have an email address')
         user = self.model(
             email=self.normalize_email(email),
-            last_name=self.last_name,
-            first_name=self.first_name
+            last_name=last_name,
+            first_name=first_name
         )
 
         user.set_password(password)
