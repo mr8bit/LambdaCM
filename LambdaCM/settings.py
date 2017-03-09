@@ -31,6 +31,7 @@ SITE = 1
 
 INSTALLED_APPS = [
     'jet',
+    'team',
     'filebrowser',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -44,10 +45,13 @@ INSTALLED_APPS = [
     'colorfield',
     'blog',
     'meta',
-    'event'
+    'event',
+
 ]
 
 THUMBNAIL_HIGH_RESOLUTION = True
+
+AUTH_USER_MODEL = 'team.Member'
 
 FILER_DEBUG = True
 THUMBNAIL_PROCESSORS = (

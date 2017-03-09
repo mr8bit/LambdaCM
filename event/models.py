@@ -2,8 +2,7 @@ from django.db import models
 from filebrowser.fields import FileBrowseField
 from ckeditor_uploader.fields import RichTextUploadingField
 from blog.models import Tag
-from django.contrib.auth.models import User
-
+from LambdaCM import settings
 
 class EventLocation(models.Model):
     address = models.CharField("Адресс", max_length=500)
@@ -31,7 +30,7 @@ class Event(models.Model):
     featured_image = FileBrowseField("Главное изображение", max_length=200, directory="event/", blank=True, null=True)
     profile_image = FileBrowseField("Изображение профиля", max_length=200, directory="event/", blank=True, null=True)
     tags = models.ForeignKey("blog.Tag", verbose_name="Тэги", default="")
-    author = models.ForeignKey(User, verbose_name="Автор", null=True, blank=True)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name="Автор", null=True, blank=True)
 
     def __str__(self):
         return self.title
