@@ -26,7 +26,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
-SITE = 1
+SITE_ID = 1
 # Application definition
 
 INSTALLED_APPS = [
@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     'team',
     'filebrowser',
     'django.contrib.admin',
+    'django.contrib.sites',
+    'django.contrib.flatpages',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -64,6 +66,7 @@ THUMBNAIL_PROCESSORS = (
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -76,7 +79,7 @@ ROOT_URLCONF = 'LambdaCM.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
+        'DIRS': [os.path.join(BASE_DIR, 'media/templates')]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -89,7 +92,15 @@ TEMPLATES = [
         },
     },
 ]
-
+FILEBROWSER_EXTENSIONS = {
+    'Folder':[''],
+    'Image':['.jpg', '.jpeg', '.gif','.png','.tif','.tiff'],
+    'Zip':['.zip', '.rar'],
+    'Video':['.mov','.wmv','.mpeg','.mpg','.avi','.rm'],
+    'Document':['.pdf','.doc','.rtf','.txt','.xls','.csv'],
+    'Sound':['.mp3','.mp4','.wav','.aiff','.midi'],
+    'Code':['.html','.py','.js','.css']
+}
 WSGI_APPLICATION = 'LambdaCM.wsgi.application'
 
 # Database
