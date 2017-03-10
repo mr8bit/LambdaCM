@@ -30,6 +30,7 @@ SITE_ID = 1
 # Application definition
 
 INSTALLED_APPS = [
+    'jet.dashboard',
     'jet',
     'team',
     'filebrowser',
@@ -93,13 +94,13 @@ TEMPLATES = [
     },
 ]
 FILEBROWSER_EXTENSIONS = {
-    'Folder':[''],
-    'Image':['.jpg', '.jpeg', '.gif','.png','.tif','.tiff'],
-    'Zip':['.zip', '.rar'],
-    'Video':['.mov','.wmv','.mpeg','.mpg','.avi','.rm'],
-    'Document':['.pdf','.doc','.rtf','.txt','.xls','.csv'],
-    'Sound':['.mp3','.mp4','.wav','.aiff','.midi'],
-    'Code':['.html','.py','.js','.css']
+    'Folder': [''],
+    'Image': ['.jpg', '.jpeg', '.gif', '.png', '.tif', '.tiff'],
+    'Zip': ['.zip', '.rar'],
+    'Video': ['.mov', '.wmv', '.mpeg', '.mpg', '.avi', '.rm'],
+    'Document': ['.pdf', '.doc', '.rtf', '.txt', '.xls', '.csv'],
+    'Sound': ['.mp3', '.mp4', '.wav', '.aiff', '.midi'],
+    'Code': ['.html', '.py', '.js', '.css']
 }
 WSGI_APPLICATION = 'LambdaCM.wsgi.application'
 
@@ -162,3 +163,4 @@ MEDIA_URL = '/media/'
 
 FILEBROWSER_DIRECTORY = ''
 DIRECTORY = ''
+JET_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
