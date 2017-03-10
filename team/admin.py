@@ -3,14 +3,16 @@ from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-
+from django.contrib.admin.options import BaseModelAdmin
 from .models import *
+import nested_admin
 
 
 class SocialNetwork(admin.TabularInline):
     model = SocialNetwork
     extra = 0
     show_change_link = True
+
 
 class UserCreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
@@ -20,7 +22,7 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = Member
-        fields = ('email', )
+        fields = ('email',)
 
     def clean_password2(self):
         # Check that the two password entries match
@@ -48,7 +50,7 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = Member
-        fields = ('email', 'password','is_active', 'is_admin')
+        fields = ('email', 'password', 'is_active', 'is_admin')
 
     def clean_password(self):
         # Regardless of what the user provides, return the initial value.
@@ -66,23 +68,62 @@ class UserAdmin(BaseUserAdmin):
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
     inlines = (SocialNetwork,)
-    list_display = ('get_full_name','email',  'is_admin')
+    list_display = ('get_full_name', 'email', 'is_admin')
     list_filter = ('is_admin',)
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Персональная информация', {'fields': ('profile_image','first_name','last_name','date_of_birth')}),
-        ('Права пользователя', {'fields': ('is_admin','is_active','groups')}),
+        ('Персональная информация', {'fields': ('profile_image', 'first_name', 'last_name', 'date_of_birth')}),
+        ('Права пользователя', {'fields': ('is_admin', 'is_active', 'groups')}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a user.
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email',  'password1', 'password2')}
-        ),
+            'fields': ('email', 'password1', 'password2')}
+         ),
     )
     search_fields = ('email',)
     ordering = ('email',)
     filter_horizontal = ()
 
+
+from blog.models import SEO, Article
+
+
+
+class SEOAdmin(admin.StackedInline):
+    model = SEO
+    extra = 0
+    fields = (
+        'soe_description',
+        'key_words',
+    )
+    show_change_link = True
+
+class ArticleAdmin(admin.StackedInline):
+    model = Article
+    extra = 0
+    fields = (
+        'title', 'main_image', 'short_description', 'description')
+
+    class Media:
+        js = ['js/FB_CKEditor.js',
+              'js/ckeditor.js']
+
+    def save_model(self, request, obj, form, change):
+        obj.author = request.user
+        obj.save()
+
+
+class ProjectAdmin(admin.ModelAdmin):
+    model = Project
+    fields = (
+        'name', 'git', 'description', 'members')
+    inlines = (ArticleAdmin,SEOAdmin)
+    class Media:
+        js = ['js/FB_CKEditor.js',
+          'js/ckeditor.js']
+
+admin.site.register(Project, ProjectAdmin)
 admin.site.register(Member, UserAdmin)

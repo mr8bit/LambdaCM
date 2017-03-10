@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Group
 from django.utils.translation import gettext_lazy as _
 from filebrowser.fields import FileBrowseField
+from ckeditor_uploader.fields import RichTextUploadingField
 
 social_network = (
     ('mdi-github-circle', 'GitHub'),
@@ -21,12 +22,12 @@ class SocialNetwork(models.Model):
         return self.get_full_name
 
     class Meta:
-        verbose_name = "Социальные сети"
-        verbose_name_plural = "Социальные сети"
+        verbose_name = "социальных сетей"
+        verbose_name_plural = "социальных сетей"
 
 
 class TeamManager(BaseUserManager):
-    def create_user(self,  email,  password=None):
+    def create_user(self, email, password=None):
         if not email:
             raise ValueError('Users must have an email address')
         user = self.model(
@@ -38,10 +39,10 @@ class TeamManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email,   password):
+    def create_superuser(self, email, password):
         user = self.create_user(
             email,
-            password=password,  )
+            password=password, )
         user.is_admin = True
         user.save(using=self._db)
         return user
@@ -78,13 +79,13 @@ class Member(AbstractBaseUser):
         verbose_name_plural = "Участники"
 
     def get_full_name(self):
-        if self.first_name and self.last_name :
+        if self.first_name and self.last_name:
             return self.first_name + ' ' + self.last_name
         else:
             return self.email
 
     def __str__(self):
-        if self.first_name and self.last_name :
+        if self.first_name and self.last_name:
             return self.first_name + ' ' + self.last_name
         else:
             return self.email
@@ -107,3 +108,18 @@ class Member(AbstractBaseUser):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.is_admin
+
+
+class Project(models.Model):
+    name = models.CharField(max_length=300, verbose_name="Название")
+    description = RichTextUploadingField(verbose_name="Описание")
+    members = models.ManyToManyField(Member, verbose_name="Участники проекта")
+    git = models.URLField(verbose_name="Cсылка на Git", null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+
+    class Meta:
+        verbose_name = "Проект"
+        verbose_name_plural = "Проекты"

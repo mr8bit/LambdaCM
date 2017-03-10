@@ -4,6 +4,7 @@ from meta.models import ModelMeta
 from ckeditor_uploader.fields import RichTextUploadingField
 from filebrowser.fields import FileBrowseField
 from LambdaCM import settings
+from team.models import Project
 
 
 class Article(ModelMeta, models.Model):
@@ -18,6 +19,7 @@ class Article(ModelMeta, models.Model):
     main_image = FileBrowseField("Главное изображение", max_length=200, directory="images/", blank=True, null=True)
     post_in_vk = models.BooleanField(verbose_name="Постить в вк?", default=False)
     post_in_twitter = models.BooleanField(verbose_name="Постить в твиттер?", default=False)
+    project_blog = models.ForeignKey("team.Project", blank=True, null=True)
 
     def __str__(self):
         return self.title
@@ -45,6 +47,7 @@ class Tag(models.Model):
 
 
 from event.models import Event
+from team.models import Project
 
 
 class SEO(models.Model):
@@ -52,12 +55,15 @@ class SEO(models.Model):
     key_words = models.TextField(verbose_name="Ключ слова")
     article = models.OneToOneField(Article, related_name='articles', null=True, blank=True)
     event = models.OneToOneField(Event, related_name="events", null=True, blank=True)
+    project = models.OneToOneField(Project, related_name="projects", null=True, blank=True)
 
     def __str__(self):
         if self.article:
             return "SEO для статьи " + self.article.title
-        else:
+        elif self.event:
             return "SEO для мероприятия" + self.event.title
+        else:
+            return "SEO для проекта" + self.project.name
 
     class Meta:
         verbose_name = "SEO"

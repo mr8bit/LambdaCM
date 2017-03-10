@@ -14,26 +14,17 @@ class SEO(admin.StackedInline):
     show_change_link = True
 
 
-class AdditionInfo(admin.StackedInline):
-    model = AdditionInfo
-    extra = 0
-    show_change_link = True
 
 
 class EventAdmin(admin.ModelAdmin):
     model = Event
-    inlines = (AdditionInfo, SEO,)
-    fields = (
-        'title',
-        'start',
-        'end',
-        'allow_comments',
-        'location',
-        'description',
-        'featured_image',
-        'profile_image',
-        'tags',
+    inlines = ( SEO,)
+    fieldsets = (
+        ('Основное', {'fields': ('title', 'start','end','tags','featured_image','profile_image','location')}),
+        ('Описание', {'fields': ('allow_comments', 'description')}),
+        ('Дополнительная информация', {'fields': ('internet_available', 'take_computer', 'site','value')}),
     )
+
 
     class Media:
         js = ['js/FB_CKEditor.js',

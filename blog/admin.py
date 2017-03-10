@@ -14,8 +14,10 @@ class SEO(admin.StackedInline):
 
 class ArticleAdmin(admin.ModelAdmin):
     model = Article
-    fields = (
-        'title', 'sub_title', 'post_in_vk', 'main_image', 'post_in_twitter', 'short_description', 'description', 'tags')
+    fieldsets = (
+        ('Основное', {'fields': ('title', 'sub_title','post_in_vk','post_in_twitter','main_image')}),
+        ('Описание', {'fields': ('tags', 'short_description','description')}),
+    )
     inlines = (SEO,)
 
     class Media:
