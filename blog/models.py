@@ -15,6 +15,7 @@ class Article(ModelMeta, models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name="Автор", null=True, blank=True)
     tags = models.ManyToManyField("Tag", verbose_name="Тэги")
     datetime_create = models.DateTimeField(auto_now_add=True)
+    type = models.BooleanField(default=False, verbose_name="Гавная новость")
     datetime_updated = models.DateTimeField(auto_now=True)
     main_image = FileBrowseField("Главное изображение", max_length=200, directory="images/", blank=True, null=True)
     post_in_vk = models.BooleanField(verbose_name="Постить в вк?", default=False)

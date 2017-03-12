@@ -116,6 +116,9 @@ class Project(models.Model):
     members = models.ManyToManyField(Member, verbose_name="Участники проекта")
     git = models.URLField(verbose_name="Cсылка на Git", null=True, blank=True)
 
+    class Media:
+        js = ['js/FB_CKEditor.js',
+              'js/ckeditor.js']
     def __str__(self):
         return self.name
 

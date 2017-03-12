@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import *
 # Register your models here.
 from blog.models import SEO
+from django_ymap.admin import YmapAdmin
 
 
 class SEO(admin.StackedInline):
@@ -14,17 +15,17 @@ class SEO(admin.StackedInline):
     show_change_link = True
 
 
-
-
 class EventAdmin(admin.ModelAdmin):
     model = Event
-    inlines = ( SEO,)
+    inlines = (SEO,)
+    prepopulated_fields = {'slug': ('title',)}
     fieldsets = (
-        ('Основное', {'fields': ('title', 'start','end','tags','featured_image','profile_image','location')}),
+        ('Основное', {'fields': (
+            'title', 'sub_title', 'slug', 'start', 'end', 'tags', 'type', 'featured_image', 'profile_image',
+            'location')}),
         ('Описание', {'fields': ('allow_comments', 'description')}),
-        ('Дополнительная информация', {'fields': ('internet_available', 'take_computer', 'site','value')}),
+        ('Дополнительная информация', {'fields': ('internet_available', 'take_computer', 'site', 'value')}),
     )
-
 
     class Media:
         js = ['js/FB_CKEditor.js',
@@ -36,4 +37,10 @@ class EventAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Event, EventAdmin)
-admin.site.register(EventLocation)
+
+
+class RecordAdmin(YmapAdmin, admin.ModelAdmin):
+    pass
+
+
+admin.site.register(EventLocation, RecordAdmin)
