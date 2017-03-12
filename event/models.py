@@ -9,7 +9,7 @@ from django_ymap.fields import YmapCoord
 class EventLocation(models.Model):
     address = models.CharField("Адресс", max_length=300, blank=True)
     point = YmapCoord(max_length=200, start_query=u'Россия', size_width=500, size_height=500, verbose_name="Выберите место на карте")
-    name = models.CharField("Название", max_length=300, blank=True)
+    name = models.CharField("Аудитория", max_length=300, blank=True)
     def __str__(self):
         if self.name:
             return self.name
