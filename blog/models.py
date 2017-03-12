@@ -5,9 +5,10 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from filebrowser.fields import FileBrowseField
 from LambdaCM import settings
 from team.models import Project
+from hitcount.models import HitCountMixin
 
 
-class Article(ModelMeta, models.Model):
+class Article(ModelMeta, models.Model, HitCountMixin):
     title = models.CharField(max_length=300, verbose_name="Название")
     sub_title = models.CharField(max_length=300, verbose_name="Слоган")
     short_description = RichTextUploadingField(verbose_name="Короткое описание")

@@ -2,7 +2,6 @@
 {% load staticfiles %}
 {% load gravatar %}
 {% load mathfilters %}
-
 {% block content %}
     <div class="container content">
         <div class="row">
@@ -99,7 +98,7 @@
                                     Сайт
                                 </div>
                                 <div class="description">
-                                    <a href="#">{{ event.site }} </a>
+                                    <a target="_blank" href="{{ event.site }}">{{ event.site }} </a>
                                 </div>
                             </div>
                             <div class="info-item col-md-4 col-xs-6">
@@ -173,7 +172,7 @@
                     <div class="views-content">
                         <div class="views-count-btn">
                             <div class="views-count-icon"><span class="mdi mdi-eye"></span></div>
-                            <div class="views-count-text">13</div>
+                            <div class="views-count-text">{{ event.hit_count.hits }}</div>
                         </div>
 
                     </div>
@@ -183,13 +182,13 @@
                 <div class="date-time-event-card">
                     <div class="date-card">
                         <div class="date">
-                            4 января
+                            {{ event.start|date:"d F" }}
                         </div>
                         <div class="weekday">
-                            среда
+                            {{ event.start|date:"l" }}
                         </div>
                         <div class="time">
-                            <div class="value">12:00</div>
+                            <div class="value">{{ event.start|time:"H:i" }}</div>
                         </div>
                         <div class="text-time-left">
                             До начала осталось
@@ -199,8 +198,8 @@
 
                         <div class="time-card">
                             <div class="item-value">
-                                <div class="item">0</div>
-                                <div class="item">0</div>
+                                <div id="day0" class="item">0</div>
+                                <div id="day1" class="item">0</div>
                             </div>
                             <div class="item-type">дней</div>
                         </div>
@@ -209,8 +208,8 @@
 
                         <div class="time-card">
                             <div class="item-value">
-                                <div class="item">1</div>
-                                <div class="item">3</div>
+                                <div id='hour0' class="item">1</div>
+                                <div id='hour1' class="item">3</div>
                             </div>
                             <div class="item-type">часов</div>
                         </div>
@@ -219,8 +218,8 @@
 
                         <div class="time-card">
                             <div class="item-value">
-                                <div class="item">3</div>
-                                <div class="item">7</div>
+                                <div id='min0' class="item">3</div>
+                                <div id='min1' class="item">7</div>
                             </div>
                             <div class="item-type">минут</div>
                         </div>
@@ -236,7 +235,7 @@
                             {{ event.location.address }}
                         </div>
                     </div>
-                     <div class="address">
+                    <div class="address">
                         <div class="label">
                             Аудитория:
                         </div>
@@ -252,8 +251,16 @@
 
     </div>
     {% block scripts %}
+        <script src="//code.jquery.com/jquery-1.12.4.min.js"
+                integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+                crossorigin="anonymous"></script>
+        <script type="text/javascript" src="{% static 'js/datetime-counter.js' %}"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                get_timer("{{ event.start|date:"c" }}");
+            });
+        </script>
         <script src="//api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
-
         <script type="text/javascript">
             window.onload = function () {
                 ymaps.ready(function () {
@@ -264,8 +271,8 @@
                                 searchControlProvider: 'yandex#search'
                             }),
                             myPlacemark = new ymaps.Placemark(myMap.getCenter(), {
-                                hintContent: 'Собственный значок метки',
-                                balloonContent: 'Это красивая метка'
+                                hintContent: '{{ event.location }}',
+                                balloonContent: 'Аудитория: {{ event.location }} '
                             }, {
                                 preset: 'islands#blueEducationCircleIcon'
 

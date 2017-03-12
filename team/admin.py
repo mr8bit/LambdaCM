@@ -5,7 +5,6 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.contrib.admin.options import BaseModelAdmin
 from .models import *
-import nested_admin
 
 
 class SocialNetwork(admin.TabularInline):

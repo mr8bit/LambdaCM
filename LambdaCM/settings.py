@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'mptt',
     'mathfilters',
     'django_ymap',
+    'hitcount',
     'django_gravatar',
     'colorfield',
     'blog',
