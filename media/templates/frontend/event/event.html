@@ -179,6 +179,7 @@
                 </div>
             </div>
             <div class="col-md-3 side-bar">
+{% if datetime_now < event.start %}
                 <div class="date-time-event-card">
                     <div class="date-card">
                         <div class="date">
@@ -225,6 +226,7 @@
                         </div>
                     </div>
                 </div>
+{% endif %}
                 <div class="advertising"></div>
                 <div class="map">
                     <div class="address">

@@ -5,6 +5,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.contrib.admin.options import BaseModelAdmin
 from .models import *
+from blog.models import SEO, Article
 
 
 class SocialNetwork(admin.TabularInline):
@@ -87,8 +88,7 @@ class UserAdmin(BaseUserAdmin):
     filter_horizontal = ()
 
 
-from blog.models import SEO, Article
-
+admin.site.register(Member, UserAdmin)
 
 
 class SEOAdmin(admin.StackedInline):
@@ -99,6 +99,7 @@ class SEOAdmin(admin.StackedInline):
         'key_words',
     )
     show_change_link = True
+
 
 class ArticleAdmin(admin.StackedInline):
     model = Article
@@ -119,10 +120,28 @@ class ProjectAdmin(admin.ModelAdmin):
     model = Project
     fields = (
         'name', 'git', 'description', 'members')
-    inlines = (ArticleAdmin,SEOAdmin)
+    inlines = (ArticleAdmin, SEOAdmin)
+
     class Media:
         js = ['js/FB_CKEditor.js',
-          'js/ckeditor.js']
+              'js/ckeditor.js']
+
 
 admin.site.register(Project, ProjectAdmin)
-admin.site.register(Member, UserAdmin)
+
+
+class PatnerAdmin(admin.ModelAdmin):
+    model = Partner
+    prepopulated_fields = {'slug': ('name',)}
+    fieldsets = (
+        (None, {'fields': ('name', 'type_partner', 'slug','image',)}),
+        ('Описание', {'fields': ('description',)}),
+        ('Контакты', {'fields': ('address', 'site', 'phone')}),
+    )
+
+    class Media:
+        js = ['js/FB_CKEditor.js',
+              'js/ckeditor.js']
+
+
+admin.site.register(Partner, PatnerAdmin)

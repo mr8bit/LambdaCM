@@ -115,14 +115,37 @@ class Project(models.Model):
     description = RichTextUploadingField(verbose_name="Описание")
     members = models.ManyToManyField(Member, verbose_name="Участники проекта")
     git = models.URLField(verbose_name="Cсылка на Git", null=True, blank=True)
+    image = FileBrowseField("Главное изображение", max_length=200, directory="images/", blank=True, null=True)
 
     class Media:
         js = ['js/FB_CKEditor.js',
               'js/ckeditor.js']
+
     def __str__(self):
         return self.name
-
 
     class Meta:
         verbose_name = "Проект"
         verbose_name_plural = "Проекты"
+
+
+class Partner(models.Model):
+    name = models.CharField(max_length=300, verbose_name="Название партнера")
+    slug = models.SlugField()
+    type_partner = models.CharField(max_length=300, verbose_name="Тип партнера")
+    description = RichTextUploadingField(verbose_name="Описание")
+    address = models.CharField(verbose_name="Адресс", max_length=500)
+    site = models.CharField(verbose_name="Сайт", max_length=500)
+    phone = models.CharField(verbose_name="Телефон", max_length=500)
+    image = FileBrowseField("Изображение", max_length=200, directory="images/", blank=True, null=True)
+
+    class Media:
+        js = ['js/FB_CKEditor.js',
+              'js/ckeditor.js']
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Партнер"
+        verbose_name_plural = "Партнеры"
