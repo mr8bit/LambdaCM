@@ -19,6 +19,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+# TODO: move SECRET_KEY from settings.py to local_settings.py, which is not tracking
+# TODO: run gitBFG against settings.py to remove SECRET_KEY
 SECRET_KEY = '$sp7335nltx@k74mj0dr^rz79q$hhq!0g7@65o$*a_r+o2g(dx'
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -32,7 +34,10 @@ SITE_ID = 1
 INSTALLED_APPS = [
     'jet.dashboard',
     'jet',
+    'blog',
+    'event',
     'team',
+    'meta',
     'filebrowser',
     'django.contrib.admin',
     'django.contrib.sites',
@@ -50,10 +55,6 @@ INSTALLED_APPS = [
     'hitcount',
     'django_gravatar',
     'colorfield',
-    'blog',
-    'meta',
-    'event',
-
 ]
 
 THUMBNAIL_HIGH_RESOLUTION = True
