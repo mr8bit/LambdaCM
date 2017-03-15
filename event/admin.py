@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import *
 # Register your models here.
-from blog.models import SEO
+from team.models import SEO
 from django_ymap.admin import YmapAdmin
 
 
@@ -9,7 +9,7 @@ class SEO(admin.StackedInline):
     model = SEO
     extra = 0
     fields = (
-        'soe_description',
+        'seo_description',
         'key_words',
     )
     show_change_link = True

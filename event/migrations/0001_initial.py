@@ -7,7 +7,7 @@ from django.conf import settings
 from django.db import migrations, models
 import django.db.models.deletion
 import filebrowser.fields
-from django_ymap.fields import YmapCoord
+import django_ymap.fields
 
 
 class Migration(migrations.Migration):
@@ -15,10 +15,23 @@ class Migration(migrations.Migration):
 
     dependencies = [
         # migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('blog', '0001_initial'),
+        # ('blog', '0001_initial'),
     ]
 
     operations = [
+        migrations.CreateModel(
+            name='EventLocation',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('address', models.CharField(blank=True, max_length=300, verbose_name='Адрес')),
+                ('name', models.CharField(blank=True, max_length=300, verbose_name='Аудитория')),
+                ('point', django_ymap.fields.YmapCoord(max_length=200, verbose_name='Выберите место на карте')),
+            ],
+            options={
+                'verbose_name': 'Местоположение',
+                'verbose_name_plural': 'Местоположения',
+            },
+        ),
         migrations.CreateModel(
             name='Event',
             fields=[
@@ -34,7 +47,7 @@ class Migration(migrations.Migration):
                 ('value', models.CharField(default='Бесплатно', max_length=300, verbose_name='Стоимость')),
                 ('type', models.BooleanField(default=False, verbose_name='Главная новость')),
                 ('sub_title', models.CharField(max_length=500, verbose_name='Слоган')),
-                ('slug', models.SlugField(default=1)),
+                ('slug', models.SlugField()),
                 ('featured_image', filebrowser.fields.FileBrowseField(blank=True, max_length=200, null=True,
                                                                       verbose_name='Главное изображение')),
                 ('profile_image', filebrowser.fields.FileBrowseField(blank=True, max_length=200, null=True,
@@ -43,26 +56,13 @@ class Migration(migrations.Migration):
                                              to=settings.AUTH_USER_MODEL, verbose_name='Автор')),
                 ('location', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
                                                to='event.EventLocation', verbose_name='Местоположение')),
-                ('tags', models.ForeignKey(default='', on_delete=django.db.models.deletion.CASCADE,
-                                           to='blog.Tag', verbose_name='Тэги')),
+                # ('tags', models.ForeignKey(default='', on_delete=django.db.models.deletion.CASCADE,
+                #                            to='team.Tag', verbose_name='Тэги')),
             ],
             options={
                 'verbose_name': 'Мероприятие',
                 'verbose_name_plural': 'Мероприятия',
                 'ordering': ('-start',),
-            },
-        ),
-        migrations.CreateModel(
-            name='EventLocation',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('address', models.CharField(blank=True, max_length=300, verbose_name='Адрес')),
-                ('name', models.CharField(blank=True, max_length=300, verbose_name='Аудитория')),
-                ('point', YmapCoord(default=1, max_length=200, verbose_name='Выберите место на карте')),
-            ],
-            options={
-                'verbose_name': 'Местоположение',
-                'verbose_name_plural': 'Местоположения',
             },
         ),
     ]
