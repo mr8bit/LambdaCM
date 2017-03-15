@@ -5,7 +5,8 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.contrib.admin.options import BaseModelAdmin
 from .models import *
-from blog.models import SEO, Article
+from blog.models import Article
+from team.models import SEO
 
 
 class SocialNetwork(admin.TabularInline):
@@ -95,7 +96,7 @@ class SEOAdmin(admin.StackedInline):
     model = SEO
     extra = 0
     fields = (
-        'soe_description',
+        'seo_description',
         'key_words',
     )
     show_change_link = True
@@ -145,3 +146,4 @@ class PatnerAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Partner, PatnerAdmin)
+admin.site.register(Tag)

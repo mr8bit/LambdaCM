@@ -3,6 +3,11 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Group
 from django.utils.translation import gettext_lazy as _
 from filebrowser.fields import FileBrowseField
 from ckeditor_uploader.fields import RichTextUploadingField
+from colorfield.fields import ColorField
+from event.models import Event
+from blog.models import Article
+
+# from team.models import Project
 
 social_network = (
     ('mdi-github-circle', 'GitHub'),
@@ -149,3 +154,35 @@ class Partner(models.Model):
     class Meta:
         verbose_name = "Партнер"
         verbose_name_plural = "Партнеры"
+
+
+class Tag(models.Model):
+    name = models.CharField(max_length=300, verbose_name="Название")
+    color = ColorField(default='#FF0000')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Тэг"
+        verbose_name_plural = "Тэги"
+
+
+class SEO(models.Model):
+    seo_description = models.TextField(verbose_name="SEO Описание")
+    key_words = models.TextField(verbose_name="Ключ слова")
+    article = models.OneToOneField(Article, related_name='articles', null=True, blank=True)
+    event = models.OneToOneField(Event, related_name="events", null=True, blank=True)
+    project = models.OneToOneField(Project, related_name="projects", null=True, blank=True)
+
+    def __str__(self):
+        if self.article:
+            return "SEO для статьи " + self.article.title
+        elif self.event:
+            return "SEO для мероприятия" + self.event.title
+        else:
+            return "SEO для проекта" + self.project.name
+
+    class Meta:
+        verbose_name = "SEO"
+        verbose_name_plural = "SEO"

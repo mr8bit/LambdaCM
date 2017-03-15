@@ -7,6 +7,7 @@ from django.conf import settings
 import django.db.models.deletion
 import filebrowser.fields
 import ckeditor_uploader.fields
+import colorfield.fields
 
 
 class Migration(migrations.Migration):
@@ -14,6 +15,8 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('auth', '0008_alter_user_username_max_length'),
+        # ('blog', '0001_initial'),
+        # ('event', '0001_initial'),
     ]
 
     operations = [
@@ -90,11 +93,46 @@ class Migration(migrations.Migration):
                 ('phone', models.CharField(max_length=500, verbose_name='Телефон')),
                 ('image', filebrowser.fields.FileBrowseField(blank=True, max_length=200, null=True,
                                                              verbose_name='Изображение')),
-                ('slug', models.SlugField(default=2)),
+                ('slug', models.SlugField()),
             ],
             options={
                 'verbose_name': 'Партнер',
                 'verbose_name_plural': 'Партнеры',
+            },
+        ),
+
+        migrations.CreateModel(
+            name='SEO',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('seo_description', models.TextField(verbose_name='SEO Описание')),
+                ('key_words', models.TextField(verbose_name='Ключ слова')),
+                # ('article', models.OneToOneField(blank=True, null=True,
+                #                                  on_delete=django.db.models.deletion.CASCADE,
+                #                                  related_name='articles', to='blog.Article')),
+                # ('event', models.OneToOneField(blank=True, null=True,
+                #                                on_delete=django.db.models.deletion.CASCADE,
+                #                                related_name='events', to='event.Event')),
+                # ('project', models.OneToOneField(blank=True, null=True,
+                #                                  on_delete=django.db.models.deletion.CASCADE,
+                #                                  related_name='projects', to='team.Project')),
+            ],
+            options={
+                'verbose_name': 'SEO',
+                'verbose_name_plural': 'SEO',
+            },
+        ),
+
+        migrations.CreateModel(
+            name='Tag',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('name', models.CharField(max_length=300, verbose_name='Название')),
+                ('color', colorfield.fields.ColorField(default='#FF0000', max_length=10)),
+            ],
+            options={
+                'verbose_name': 'Тэг',
+                'verbose_name_plural': 'Тэги',
             },
         ),
     ]
