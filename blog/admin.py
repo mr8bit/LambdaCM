@@ -1,12 +1,13 @@
 from django.contrib import admin
-from .models import *
+from blog.models import *
+from team.models import SEO
 
 
 class SEO(admin.StackedInline):
     model = SEO
     extra = 0
     fields = (
-        'soe_description',
+        'seo_description',
         'key_words',
     )
     show_change_link = True
@@ -15,8 +16,8 @@ class SEO(admin.StackedInline):
 class ArticleAdmin(admin.ModelAdmin):
     model = Article
     fieldsets = (
-        ('Основное', {'fields': ('title', 'sub_title','post_in_vk','post_in_twitter','type','main_image')}),
-        ('Описание', {'fields': ('tags', 'short_description','description')}),
+        ('Основное', {'fields': ('title', 'sub_title', 'post_in_vk', 'post_in_twitter', 'type', 'main_image')}),
+        ('Описание', {'fields': ('tags', 'short_description', 'description')}),
     )
     inlines = (SEO,)
 
@@ -31,18 +32,18 @@ class ArticleAdmin(admin.ModelAdmin):
 
 admin.site.register(Article, ArticleAdmin)
 
-admin.site.register(Tag)
 from django.contrib import admin
 from django.contrib.flatpages.admin import FlatPageAdmin
 from django.contrib.flatpages.models import FlatPage
 from django.utils.translation import gettext_lazy as _
+
 
 # Define a new FlatPageAdmin
 class FlatPageAdmin(FlatPageAdmin):
     fieldsets = (
         (None, {'fields': ('url', 'title', 'content', 'sites')}),
         (_('Advanced options'), {
-            'classes': ('collapse', ),
+            'classes': ('collapse',),
             'fields': (
                 'enable_comments',
                 'registration_required',
@@ -50,6 +51,7 @@ class FlatPageAdmin(FlatPageAdmin):
             ),
         }),
     )
+
 
 # Re-register FlatPageAdmin
 admin.site.unregister(FlatPage)
