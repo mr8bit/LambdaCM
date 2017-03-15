@@ -3,13 +3,17 @@
 from __future__ import unicode_literals
 
 from django.db import migrations, models
+from django.conf import settings
+import django.db.models.deletion
+import filebrowser.fields
+import ckeditor_uploader.fields
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
+        ('auth', '0008_alter_user_username_max_length'),
     ]
 
     operations = [
@@ -23,9 +27,74 @@ class Migration(migrations.Migration):
                 ('git_username', models.CharField(max_length=300, verbose_name='Git username')),
                 ('is_active', models.BooleanField(default=True)),
                 ('is_admin', models.BooleanField(default=False)),
+                ('groups', models.ManyToManyField(blank=True,
+                                                  help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.',
+                                                  related_name='user_set', related_query_name='user', to='auth.Group',
+                                                  verbose_name='Группа')),
+                ('date_of_birth', models.DateField(blank=True, null=True, verbose_name='Дата рождения')),
+                ('first_name', models.CharField(blank=True, max_length=300, null=True, verbose_name='Имя')),
+                ('last_name', models.CharField(blank=True, max_length=300, null=True, verbose_name='Фамилия')),
+                ('profile_image', filebrowser.fields.FileBrowseField(blank=True, max_length=200, null=True,
+                                                                     verbose_name='Изображения профиля')),
             ],
             options={
                 'abstract': False,
+                'verbose_name': 'Участника',
+                'verbose_name_plural': 'Участники'
+            },
+        ),
+
+        migrations.CreateModel(
+            name='SocialNetwork',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('name', models.CharField(
+                    choices=[('mdi-github-circle', 'GitHub'), ('mdi-twitter', 'Twitter'), ('mdi-gmail', 'Mail'),
+                             ('mdi-vk', 'Vk'), ('mdi-facebook', 'Facebook')], max_length=300,
+                    verbose_name='Название социальной сети')),
+                ('link', models.CharField(max_length=300, verbose_name='Ссылка на профиль')),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+            ],
+            options={
+                'verbose_name': 'социальных сетей',
+                'verbose_name_plural': 'социальных сетей'
+            }
+        ),
+
+        migrations.CreateModel(
+            name='Project',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('name', models.CharField(max_length=300, verbose_name='Название')),
+                ('description', ckeditor_uploader.fields.RichTextUploadingField(verbose_name='Описание')),
+                ('members', models.ManyToManyField(to=settings.AUTH_USER_MODEL, verbose_name='Участники проекта')),
+                ('git', models.URLField(blank=True, null=True, verbose_name='Cсылка на Git')),
+                ('image', filebrowser.fields.FileBrowseField(blank=True, max_length=200, null=True,
+                                                             verbose_name='Главное изображение')),
+            ],
+            options={
+                'verbose_name': 'Проект',
+                'verbose_name_plural': 'Проекты'
+            }
+        ),
+
+        migrations.CreateModel(
+            name='Partner',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('name', models.CharField(max_length=300, verbose_name='Название партнера')),
+                ('type_partner', models.CharField(max_length=300, verbose_name='Тип партнера')),
+                ('description', ckeditor_uploader.fields.RichTextUploadingField(verbose_name='Описание')),
+                ('address', models.CharField(max_length=500, verbose_name='Адресс')),
+                ('site', models.CharField(max_length=500, verbose_name='Сайт')),
+                ('phone', models.CharField(max_length=500, verbose_name='Телефон')),
+                ('image', filebrowser.fields.FileBrowseField(blank=True, max_length=200, null=True,
+                                                             verbose_name='Изображение')),
+                ('slug', models.SlugField(default=2)),
+            ],
+            options={
+                'verbose_name': 'Партнер',
+                'verbose_name_plural': 'Партнеры',
             },
         ),
     ]
