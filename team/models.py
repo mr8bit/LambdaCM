@@ -24,7 +24,7 @@ class SocialNetwork(models.Model):
     user = models.ForeignKey('Member')
 
     def __str__(self):
-        return self.get_full_name
+        return Member.get_full_name(self.user)
 
     class Meta:
         verbose_name = "социальных сетей"
