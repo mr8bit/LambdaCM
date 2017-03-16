@@ -1,8 +1,8 @@
-from django.template import RequestContext
 from django.shortcuts import render_to_response
+
 from blog.models import Article
 from event.models import Event
-from team.models import Partner, Project, Member
+from team.models import Partner
 
 
 def index(request):
