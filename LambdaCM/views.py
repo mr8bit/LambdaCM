@@ -2,6 +2,7 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response
 from blog.models import Article
 from event.models import Event
+from team.models import Partner, Project, Member
 
 
 def index(request):
@@ -19,3 +20,8 @@ def events(request):
 def blog(request):
     articles = Article.objects.all()
     return render_to_response('frontend/blog/list.html', {'articles': articles})
+
+
+def partners(request):
+    partners = Partner.objects.all()
+    return render_to_response('frontend/partner/list.html', {'partners': partners})
