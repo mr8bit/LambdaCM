@@ -15,8 +15,6 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('auth', '0008_alter_user_username_max_length'),
-        # ('blog', '0001_initial'),
-        # ('event', '0001_initial'),
     ]
 
     operations = [
@@ -109,15 +107,6 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('seo_description', models.TextField(verbose_name='SEO Описание')),
                 ('key_words', models.TextField(verbose_name='Ключ слова')),
-                # ('article', models.OneToOneField(blank=True, null=True,
-                #                                  on_delete=django.db.models.deletion.CASCADE,
-                #                                  related_name='articles', to='blog.Article')),
-                # ('event', models.OneToOneField(blank=True, null=True,
-                #                                on_delete=django.db.models.deletion.CASCADE,
-                #                                related_name='events', to='event.Event')),
-                # ('project', models.OneToOneField(blank=True, null=True,
-                #                                  on_delete=django.db.models.deletion.CASCADE,
-                #                                  related_name='projects', to='team.Project')),
             ],
             options={
                 'verbose_name': 'SEO',

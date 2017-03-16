@@ -14,7 +14,7 @@ social_network = (
     ('mdi-github-circle', 'GitHub'),
     ('mdi-twitter', 'Twitter'),
     ('mdi-gmail', 'Mail'),
-    ('mdi-vk', 'Vk'),  # mdi-vk - ставиться как иконка соц сети, а vk - видет пользователь
+    ('mdi-vk', 'VK'),  # mdi-vk - ставится как иконка соц сети, а vk - видет пользователь
     ('mdi-facebook', 'Facebook'),
 )
 

@@ -1,5 +1,6 @@
+from django.conf.urls import url
+
 import team.views
-from django.conf.urls import include, url
 
 urlpatterns = [
     url(r'^team/(?P<slug>[\w-]+)$', team.views.TeamView.as_view(), name='team'),
