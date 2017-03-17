@@ -4,7 +4,8 @@ from blog.models import Article
 from event.models import Event
 from team.models import Partner
 
-
+##WHY???
+## Зачем это тут ? 
 def index(request):
     events_list = Event.objects.all()
     articles = Article.objects.all()

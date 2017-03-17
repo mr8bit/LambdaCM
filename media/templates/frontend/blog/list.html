@@ -3,9 +3,10 @@
 {% block content %}
     <div class="head-search">
         <div class="image-bc">
-            <img src="{% static 'img/eneZhZjXMck.jpg' %}">
-            <img src="{% static 'img/L7ZL3W9aIvk.jpg' %}">
-            <img src="{% static 'img/oF47553TnAI.jpg' %}">
+            {% for article in articls|slice:":4" %}
+            <img src="/media/{{ article.main_image }}">
+
+            {% endfor %}
         </div>
         <div class="container">
             <div class="some-search">
@@ -55,9 +56,12 @@
     </div>
     <div class="container">
         <div class="article-list">
-            {% for article in articles %}
+
+
+
+            {% for article in articls %}
                 {% if article.type %}
-                    <a href="#" class="article-main">
+                    <a href="{% url "article" article.slug %}" class="article-main">
                         <div class="content-main">
                             <div class="tags">
                                 {% for tag in article.tags.all %}
@@ -67,34 +71,33 @@
                             <div class="title">{{ article.title }}</div>
                             <div class="description">{{ article.sub_title }}
                             </div>
-                            <div class="views">3<span class="red">K</span> просмотров</div>
+                            <div class="views">3<span style="color:{{ article.tags.first.color }}">K</span> просмотров</div>
                         </div>
                         <img src="/media/{{ article.main_image }}" class="img-responsive">
                     </a>
-
                 {% else %}
-                    <a href="#" class="article-sub">
-                        <div class="content-sub">
-                            <img src="/media/{{ article.main_image }}" class="img-responsive">
-                            <div class="some-content">
-                                <div class="tags-comment">
-                                    <div class="tags">
-                                        {% for tag in article.tags.all %}
-                                            <div class="tag-outline"
-                                                 style="border-color:{{ tag.color }}; color: {{ tag.color }};">{{ tag }}</div>
-                                        {% endfor %}
-                                    </div>
-                                    <div class="comment">
-                                        <span class="mdi mdi-comment-multiple-outline"></span>
-                                        <span>12</span>
-                                    </div>
-                                </div>
-                                <div class="title">{{ article.title }}</div>
-                                <div class="description">{{ article.short_description|safe }}</div>
-                            </div>
 
+   <a href="{% url "article" article.slug %}"  class="article-sub">
+            <div class="content-sub">
+                <img src="/media/{{ article.main_image }}" class="img-responsive">
+                <div class="some-content">
+                    <div class="tags-comment">
+                        <div class="tag-outline" style="border-color: {{ article.tags.first.color }}">{{ article.tags.first }}</div>
+                        <div class="comment">
+                            <span class="mdi mdi-comment-multiple-outline"></span>
+                            <span>12</span>
                         </div>
-                    </a>
+                    </div>
+                    <div class="title">{{ article}}</div>
+                    <div class="description">{{ article.sub_title}} </div>
+                </div>
+
+            </div>
+        </a>
+
+
+
+
                 {% endif %}
             {% endfor %}
 

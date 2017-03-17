@@ -1,0 +1,32 @@
+{% extends 'frontend/base.html' %}
+{% load staticfiles %}
+{% block content %}
+<div class="new-project">
+    <img src="/media/{{ main_project.image  }}">
+    <div class="info">
+        <div class="description">
+            {{ main_project.sub_name  }}
+        </div>
+        <div class="title">
+            {{ main_project.name  }}
+        </div>
+        <a href="#" class="more">
+            подробнее
+        </a>
+    </div>
+</div>
+<div class="container">
+    <div class="list">
+        {% for project in projects %}
+        <div class="item">
+            <div class="image">
+                <img src="/media/{{ project.image.url }}">
+            </div>
+            <div class="title">
+                {{ project.name }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

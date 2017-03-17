@@ -117,7 +117,7 @@ class ArticleAdmin(admin.StackedInline):
 class ProjectAdmin(admin.ModelAdmin):
     model = Project
     fields = (
-        'name', 'git', 'description', 'members')
+        'name','sub_name','image' ,'git', 'description', 'members')
     inlines = (ArticleAdmin, SEOAdmin)
 
     class Media:
