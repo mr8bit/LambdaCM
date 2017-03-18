@@ -15,7 +15,7 @@ def index(request):
     :return:
     """
     context = {}
-    context['articls'] = Article.objects.all()[:3]
+    context['articles'] = Article.objects.all()[:3]
     context['events'] = Event.objects.all()[:6]
     return TemplateResponse(request, "frontend/index.html", context)
 
@@ -27,7 +27,7 @@ def article_list(request):
     :return:
     """
     context = {}
-    context['articls'] = Article.objects.all()
+    context['articles'] = Article.objects.all()
     context['hit_tag'] = []
     # Я хз как нормально получить популряные тэги
     # ---------Мой костыль---------
