@@ -35,7 +35,9 @@ def article_list(request):
     for i in HitCount.objects.all().order_by('-hits')[:10]:  # берем последние 10 статей
         if 'blog' == i.content_type.app_label:  # так как в hit_count есть и evet'ы сортируем на статьи
             for tag in i.content_object.tags.all():
-                context['hit_tag'].append(tag)  # из каждой статьи берем все тэги
+                if tag not in context['hit_tag']:
+                    context['hit_tag'].append(tag)  # из каждой статьи берем все тэги
+
     return TemplateResponse(request, "frontend/blog/list.html", context)
 
 
