@@ -4,8 +4,7 @@
     <div class="head-search">
         <div class="image-bc">
             {% for article in articls|slice:":4" %}
-            <img src="/media/{{ article.main_image }}">
-
+                <img src="/media/{{ article.main_image }}">
             {% endfor %}
         </div>
         <div class="container">
@@ -18,18 +17,9 @@
             <div class="some-tags">
                 <div class="title">ПОПУЛЯРНЫЕ ТЕГИ</div>
                 <div class="cloud-tags">
-                    <a class="tag" href="#">python</a>
-                    <a class="tag" href="#">перевод</a>
-                    <a class="tag" href="#">web</a>
-                    <a class="tag" href="#">design</a>
-                    <a class="tag" href="#">django</a>
-                    <a class="tag" href="#">react</a>
-                    <a class="tag" href="#">js</a>
-                    <a class="tag" href="#">ecma2016</a>
-                    <a class="tag" href="#">android</a>
-                    <a class="tag" href="#">drone</a>
-                    <a class="tag" href="#">linux</a>
-                    <a class="tag" href="#">pycharm</a>
+                    {% for hit in hit_tag %}
+                        <a class="tag" href="#">{{ hit.name }}</a>
+                    {% endfor %}
                 </div>
             </div>
         </div>
@@ -39,7 +29,7 @@
         <div class="container">
             <div class="head-content col-md-3">
                 <div class="title">Все новости</div>
-                <div class="count">Всего: <span>32</span></div>
+                <div class="count">Всего: <span>{{ articls.count }}</span></div>
             </div>
             <div class="sort-by col-md-4">
                 <div class="title">сортировать по</div>
@@ -58,7 +48,6 @@
         <div class="article-list">
 
 
-
             {% for article in articls %}
                 {% if article.type %}
                     <a href="{% url "article" article.slug %}" class="article-main">
@@ -71,29 +60,32 @@
                             <div class="title">{{ article.title }}</div>
                             <div class="description">{{ article.sub_title }}
                             </div>
-                            <div class="views">3<span style="color:{{ article.tags.first.color }}">K</span> просмотров</div>
+                            <div class="views">{{ article.hit_count.hits }}<span
+                                    style="color:{{ article.tags.first.color }}">K</span> просмотров
+                            </div>
                         </div>
                         <img src="/media/{{ article.main_image }}" class="img-responsive">
                     </a>
                 {% else %}
 
-   <a href="{% url "article" article.slug %}"  class="article-sub">
-            <div class="content-sub">
-                <img src="/media/{{ article.main_image }}" class="img-responsive">
-                <div class="some-content">
-                    <div class="tags-comment">
-                        <div class="tag-outline" style="border-color: {{ article.tags.first.color }}">{{ article.tags.first }}</div>
-                        <div class="comment">
-                            <span class="mdi mdi-comment-multiple-outline"></span>
-                            <span>12</span>
-                        </div>
-                    </div>
-                    <div class="title">{{ article}}</div>
-                    <div class="description">{{ article.sub_title}} </div>
-                </div>
+                    <a href="{% url "article" article.slug %}" class="article-sub">
+                        <div class="content-sub">
+                            <img src="/media/{{ article.main_image }}" class="img-responsive">
+                            <div class="some-content">
+                                <div class="tags-comment">
+                                    <div class="tag-outline"
+                                         style="border-color: {{ article.tags.first.color }}">{{ article.tags.first }}</div>
+                                    <div class="comment">
+                                        <span class="mdi mdi-comment-multiple-outline"></span>
+                                        <span>{{ article.hit_count.hits }}</span>
+                                    </div>
+                                </div>
+                                <div class="title">{{ article }}</div>
+                                <div class="description">{{ article.sub_title }} </div>
+                            </div>
 
-            </div>
-        </a>
+                        </div>
+                    </a>
 
 
 

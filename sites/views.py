@@ -5,7 +5,7 @@ from hitcount.models import HitCount
 from hitcount.views import HitCountMixin
 from django.utils import timezone
 from team.models import *
-from django.shortcuts import render, get_object_or_404 , redirect
+from django.shortcuts import render, get_object_or_404, redirect
 
 
 def index(request):
@@ -28,6 +28,14 @@ def article_list(request):
     """
     context = {}
     context['articls'] = Article.objects.all()
+    context['hit_tag'] = []
+    # Я хз как нормально получить популряные тэги
+    # ---------Мой костыль---------
+    # Берем популярные тэги из популрных статей
+    for i in HitCount.objects.all().order_by('-hits')[:10]:  # берем последние 10 статей
+        if 'blog' == i.content_type.app_label:  # так как в hit_count есть и evet'ы сортируем на статьи
+            for tag in i.content_object.tags.all():
+                context['hit_tag'].append(tag)  # из каждой статьи берем все тэги
     return TemplateResponse(request, "frontend/blog/list.html", context)
 
 
@@ -35,6 +43,8 @@ def article(request, slug):
     context = {}
     context['article'] = Article.objects.get(slug=slug)
     context['meta'] = get_object_or_404(Article, slug=slug).as_meta(request)
+    hit_count = HitCount.objects.get_for_object(context['article'])
+    hit_count_response = HitCountMixin.hit_count(request, hit_count)
     return TemplateResponse(request, "frontend/blog/post.html", context)
 
 
