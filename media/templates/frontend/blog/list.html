@@ -1,5 +1,8 @@
 {% extends 'frontend/base.html' %}
 {% load staticfiles %}
+{% block title %}
+    <title>Публикации - Lambda</title>
+{% endblock %}
 {% block content %}
     <div class="head-search">
         <div class="image-bc">
@@ -67,14 +70,13 @@
                         <img src="/media/{{ article.main_image }}" class="img-responsive">
                     </a>
                 {% else %}
-
                     <a href="{% url "article" article.slug %}" class="article-sub">
                         <div class="content-sub">
                             <img src="/media/{{ article.main_image }}" class="img-responsive">
                             <div class="some-content">
                                 <div class="tags-comment">
                                     <div class="tag-outline"
-                                         style="border-color: {{ article.tags.first.color }}">{{ article.tags.first }}</div>
+                                         style="border-color: {{ article.tags.first.color }}; color:{{ article.tags.first.color }} ">{{ article.tags.first }}</div>
                                     <div class="comment">
                                         <span class="mdi mdi-comment-multiple-outline"></span>
                                         <span>{{ article.hit_count.hits }}</span>

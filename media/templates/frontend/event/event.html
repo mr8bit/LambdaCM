@@ -2,6 +2,9 @@
 {% load staticfiles %}
 {% load gravatar %}
 {% load mathfilters %}
+{% block author %}
+          <meta name="author" content="{{ event.author }}">
+{% endblock %}
 {% block content %}
     <div class="container content">
         <div class="row">
@@ -23,17 +26,21 @@
                     </div>
                     <div class="social-networks-content">
                         <div class="social-networks">
-                            <a class="social-btn vk">
+                            <a class="social-btn vk"
+                               title="Поделиться записью в ВК"
+                               href="http://vk.com/share.php?url=http://127.0.0.1:8000{% url "event" event.slug %}"
+                               target="_blank">
                                 <div class="social-icon"><span class="mdi mdi-vk"></span></div>
-                                <div class="social-count">12</div>
                             </a>
-                            <a class="social-btn twitter">
+                            <a class="social-btn twitter" target="_blank" data-network="twitter"
+                               title="Поделиться записью в Твиттере"
+                               href="https://twitter.com/intent/tweet?url=http://127.0.0.1:8000{% url "event" event.slug %}">
                                 <div class="social-icon"><span class="mdi mdi-twitter"></span></div>
-                                <div class="social-count">12</div>
                             </a>
-                            <a class="social-btn ok">
+                            <a class="social-btn ok" title="Поделиться записью в Одноклассниках"
+                               href="https://connect.ok.ru/dk?st.cmd=WidgetSharePreview&service=odnoklassniki&st.shareUrl=http://127.0.0.1:8000{% url "event" event.slug %}"
+                               target="_blank">
                                 <div class="social-icon"><span class="mdi mdi-odnoklassniki"></span></div>
-                                <div class="social-count">12</div>
                             </a>
                         </div>
                         <div class="discuss">
@@ -98,7 +105,8 @@
                                     Сайт
                                 </div>
                                 <div class="description">
-                                    <a target="_blank" href="{{ event.site }}">{{ event.site }} </a>
+                                    <a target="_blank" title="Сайт мероприятия"
+                                       href="{{ event.site }}">{{ event.site }} </a>
                                 </div>
                             </div>
                             <div class="info-item col-md-4 col-xs-6">
@@ -149,17 +157,21 @@
                     </div>
                     <div class="social-networks-content">
                         <div class="social-networks">
-                            <a class="social-btn vk">
+                            <a class="social-btn vk"
+                               title="Поделиться записью в ВК"
+                               href="http://vk.com/share.php?url=http://127.0.0.1:8000{% url "event" event.slug %}"
+                               target="_blank">
                                 <div class="social-icon"><span class="mdi mdi-vk"></span></div>
-                                <div class="social-count">12</div>
                             </a>
-                            <a class="social-btn twitter">
+                            <a class="social-btn twitter" target="_blank" data-network="twitter"
+                               title="Поделиться записью в Твиттере"
+                               href="https://twitter.com/intent/tweet?url=http://127.0.0.1:8000{% url "event" event.slug %}">
                                 <div class="social-icon"><span class="mdi mdi-twitter"></span></div>
-                                <div class="social-count">12</div>
                             </a>
-                            <a class="social-btn ok">
+                            <a class="social-btn ok" title="Поделиться записью в Одноклассниках"
+                               href="https://connect.ok.ru/dk?st.cmd=WidgetSharePreview&service=odnoklassniki&st.shareUrl=http://127.0.0.1:8000{% url "event" event.slug %}"
+                               target="_blank">
                                 <div class="social-icon"><span class="mdi mdi-odnoklassniki"></span></div>
-                                <div class="social-count">12</div>
                             </a>
                         </div>
                         <div class="discuss">
@@ -253,6 +265,8 @@
 
     </div>
     {% block scripts %}
+                        {% if datetime_now < event.start %}
+
         <script src="//code.jquery.com/jquery-1.12.4.min.js"
                 integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
                 crossorigin="anonymous"></script>
@@ -262,23 +276,24 @@
                 get_timer("{{ event.start|date:"c" }}");
             });
         </script>
+        {% endif %}
         <script src="//api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
         <script type="text/javascript">
             window.onload = function () {
                 ymaps.ready(function () {
                     var myMap = new ymaps.Map('same-map', {
-                            center: [{{ event.location.point }}],
-                            zoom: 18
-                        }, {
-                            searchControlProvider: 'yandex#search'
-                        }),
-                        myPlacemark = new ymaps.Placemark(myMap.getCenter(), {
-                            hintContent: '{{ event.location }}',
-                            balloonContent: 'Аудитория: {{ event.location }} '
-                        }, {
-                            preset: 'islands#blueEducationCircleIcon'
+                                center: [{{ event.location.point }}],
+                                zoom: 18
+                            }, {
+                                searchControlProvider: 'yandex#search'
+                            }),
+                            myPlacemark = new ymaps.Placemark(myMap.getCenter(), {
+                                hintContent: '{{ event.location }}',
+                                balloonContent: 'Аудитория: {{ event.location }} '
+                            }, {
+                                preset: 'islands#blueEducationCircleIcon'
 
-                        });
+                            });
 
                     myMap.geoObjects.add(myPlacemark);
                 });

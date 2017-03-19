@@ -38,6 +38,7 @@ class Article(ModelMeta, models.Model, HitCountMixin):
         'use_googleplus': 'True',
         'locale':  'ru_RU',
         'keywords': 'get_keywords',
+        'twitter_card': 'summary_large_image',
     }
 
     class Meta:

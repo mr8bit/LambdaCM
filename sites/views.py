@@ -58,6 +58,15 @@ def event_list(request):
     """
     context = {}
     context['events'] = Event.objects.all()
+    context['hit_tag'] = []
+
+    # Я хз как нормально получить популряные тэги
+    # ---------Мой костыль---------
+    # Берем популярные тэги из популрных и evet'ов
+    for i in HitCount.objects.all().order_by('-hits')[:10]:  # берем последние 10 evet'ов
+        if 'event' == i.content_type.app_label:  # так как в hit_count есть и blog сортируем на evet
+            if i.content_object.tags not in context['hit_tag']:
+                context['hit_tag'].append(i.content_object.tags)  # из каждой статьи берем все тэги
     return TemplateResponse(request, "frontend/event/list.html", context)
 
 
@@ -74,7 +83,11 @@ def event(request, slug):
     context['time'] = date.seconds / 60
     hit_count = HitCount.objects.get_for_object(context['event'])
     hit_count_response = HitCountMixin.hit_count(request, hit_count)
+    context['meta'] = get_object_or_404(Event, slug=slug).as_meta(request)
+
     context['datetime_now'] = timezone.now()
+
+
     return TemplateResponse(request, "frontend/event/event.html", context)
 
 
