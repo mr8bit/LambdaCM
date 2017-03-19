@@ -6,7 +6,7 @@
 {% block content %}
     <div class="head-search">
         <div class="image-bc">
-            {% for article in articls|slice:":4" %}
+            {% for article in articles|slice:":4" %}
                 <img src="/media/{{ article.main_image }}">
             {% endfor %}
         </div>
@@ -51,7 +51,7 @@
         <div class="article-list">
 
 
-            {% for article in articls %}
+            {% for article in articles %}
                 {% if article.type %}
                     <a href="{% url "article" article.slug %}" class="article-main">
                         <div class="content-main">
