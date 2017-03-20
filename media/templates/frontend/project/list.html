@@ -5,13 +5,13 @@
 {% endblock %}
 {% block content %}
 <div class="new-project">
-    <img src="/media/{{ main_project.image  }}">
+    <img src="/media/{{ projects.first.image  }}">
     <div class="info">
         <div class="description">
-            {{ main_project.sub_name  }}
+            {{ projects.first.sub_name  }}
         </div>
         <div class="title">
-            {{ main_project.name  }}
+            {{ projects.first.name  }}
         </div>
         <a href="#" class="more">
             подробнее
@@ -20,7 +20,7 @@
 </div>
 <div class="container">
     <div class="list">
-        {% for project in projects %}
+        {% for project in projects|slice:"1:" %}
         <div class="item">
             <div class="image">
                 <img src="{{ project.image.url }}">

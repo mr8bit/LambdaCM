@@ -13,4 +13,5 @@ urlpatterns = [
     url(r'^partners$', views.patners_list, name="patners_list"),
     url(r'^partners/(?P<slug>[-\w]+)/$', views.patner, name="partner"),
     url(r'^projects$', views.project_list, name="project_list"),
+    url(r'^projects/(?P<slug>[-\w]+)/$', views.project, name="project"),
 ]

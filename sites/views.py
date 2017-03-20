@@ -123,5 +123,9 @@ def project_list(request):
     """
     context = {}
     context['projects'] = Project.objects.all()
-    context['main_project'] = Project.objects.first()
+    return TemplateResponse(request, "frontend/project/list.html", context)
+
+def project(request):
+    context = {}
+    context['projects'] = Project.objects.all()
     return TemplateResponse(request, "frontend/project/list.html", context)
