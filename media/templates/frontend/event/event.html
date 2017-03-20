@@ -3,7 +3,7 @@
 {% load gravatar %}
 {% load mathfilters %}
 {% block author %}
-          <meta name="author" content="{{ event.author }}">
+    <meta name="author" content="{{ event.author }}">
 {% endblock %}
 {% block content %}
     <div class="container content">
@@ -43,12 +43,14 @@
                                 <div class="social-icon"><span class="mdi mdi-odnoklassniki"></span></div>
                             </a>
                         </div>
-                        <div class="discuss">
-                            <a class="discuss-btn">
-                                <div class="discuss-icon"><span class="mdi mdi-comment-outline"></span></div>
-                                <div class="discuss-text">обсудить</div>
-                            </a>
-                        </div>
+                        {% if event.allow_comments %}
+                            <div class="discuss">
+                                <a class="discuss-btn">
+                                    <div class="discuss-icon"><span class="mdi mdi-comment-outline"></span></div>
+                                    <div class="discuss-text">обсудить</div>
+                                </a>
+                            </div>
+                        {% endif %}
                     </div>
                     <div class="img-content">
                         <img src="/media/{{ event.featured_image }}">
@@ -77,21 +79,28 @@
                     </div>
                     <div class="additional-information-content">
                         <div class="icon-info">
+                            {% if event.start  %}
                             <div class="icon-item">
                                 <span class="mdi mdi-clock"></span>
                             </div>
+                            {% endif %}
+                            {% if event.location %}
                             <div class="icon-item">
                                 <span class="mdi mdi-map-marker"></span>
                             </div>
+                            {% endif %}
+                        {% if event.internet_available %}
                             <div class="icon-item">
                                 <span class="mdi mdi-wifi"></span>
                             </div>
-                            <div class="icon-item">
-                                <span class="mdi mdi-train"></span>
-                            </div>
+                        {% endif %}
+                                                {% if event.take_computer %}
+
                             <div class="icon-item">
                                 <span class="mdi mdi-laptop"></span>
                             </div>
+                                                {% endif %}
+
                         </div>
                         <div class="info row">
                             <div class="info-item col-md-4 col-xs-6">
@@ -145,7 +154,7 @@
                                     Брать компьютер?
                                 </div>
                                 <div class="description">
-                                    {% if event.internet_available %}
+                                    {% if event.take_computer %}
                                         Да
                                     {% else %}
                                         Оставь дома.
@@ -176,12 +185,14 @@
                                 <div class="social-icon"><span class="mdi mdi-odnoklassniki"></span></div>
                             </a>
                         </div>
-                        <div class="discuss">
-                            <a class="discuss-btn">
-                                <div class="discuss-icon"><span class="mdi mdi-comment-outline"></span></div>
-                                <div class="discuss-text">обсудить</div>
-                            </a>
-                        </div>
+                        {% if event.allow_comments %}
+                            <div class="discuss">
+                                <a class="discuss-btn">
+                                    <div class="discuss-icon"><span class="mdi mdi-comment-outline"></span></div>
+                                    <div class="discuss-text">обсудить</div>
+                                </a>
+                            </div>
+                        {% endif %}
                     </div>
                     <div class="views-content">
                         <div class="views-count-btn">
@@ -190,6 +201,10 @@
                         </div>
 
                     </div>
+                    {% if event.allow_comments %}
+                        {% load disqus_tags %}
+                        {% disqus_show_comments %}
+                    {% endif %}
                 </div>
             </div>
             <div class="col-md-3 side-bar">
@@ -266,18 +281,19 @@
         </div>
 
     </div>
-    {% block scripts %}
-                        {% if datetime_now < event.start %}
 
-        <script src="//code.jquery.com/jquery-1.12.4.min.js"
-                integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
-                crossorigin="anonymous"></script>
-        <script type="text/javascript" src="{% static 'js/datetime-counter.js' %}"></script>
-        <script type="text/javascript">
-            $(document).ready(function () {
-                get_timer("{{ event.start|date:"c" }}");
-            });
-        </script>
+    {% block scripts %}
+        {% if datetime_now < event.start %}
+
+            <script src="//code.jquery.com/jquery-1.12.4.min.js"
+                    integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+                    crossorigin="anonymous"></script>
+            <script type="text/javascript" src="{% static 'js/datetime-counter.js' %}"></script>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    get_timer("{{ event.start|date:"c" }}");
+                });
+            </script>
         {% endif %}
         <script src="//api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
         <script type="text/javascript">
