@@ -79,27 +79,27 @@
                     </div>
                     <div class="additional-information-content">
                         <div class="icon-info">
-                            {% if event.start  %}
-                            <div class="icon-item">
-                                <span class="mdi mdi-clock"></span>
-                            </div>
+                            {% if event.start %}
+                                <div class="icon-item">
+                                    <span class="mdi mdi-clock"></span>
+                                </div>
                             {% endif %}
                             {% if event.location %}
-                            <div class="icon-item">
-                                <span class="mdi mdi-map-marker"></span>
-                            </div>
+                                <div class="icon-item">
+                                    <span class="mdi mdi-map-marker"></span>
+                                </div>
                             {% endif %}
-                        {% if event.internet_available %}
-                            <div class="icon-item">
-                                <span class="mdi mdi-wifi"></span>
-                            </div>
-                        {% endif %}
-                                                {% if event.take_computer %}
+                            {% if event.internet_available %}
+                                <div class="icon-item">
+                                    <span class="mdi mdi-wifi"></span>
+                                </div>
+                            {% endif %}
+                            {% if event.take_computer %}
 
-                            <div class="icon-item">
-                                <span class="mdi mdi-laptop"></span>
-                            </div>
-                                                {% endif %}
+                                <div class="icon-item">
+                                    <span class="mdi mdi-laptop"></span>
+                                </div>
+                            {% endif %}
 
                         </div>
                         <div class="info row">
