@@ -1,11 +1,12 @@
-from event.models import *
-# Create your views here.
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
+from django.utils import timezone
 from hitcount.models import HitCount
 from hitcount.views import HitCountMixin
-from django.utils import timezone
+
+from event.models import *
 from team.models import *
-from django.shortcuts import render, get_object_or_404, redirect
 
 
 def index(request):
@@ -20,7 +21,7 @@ def index(request):
     return TemplateResponse(request, "frontend/index.html", context)
 
 
-def article_list(request):
+def article_list(request, page=1):
     """
         Список статей
     :param request:
@@ -28,6 +29,7 @@ def article_list(request):
     """
     context = {}
     context['articles'] = Article.objects.all()
+    context['articles_bg'] = context['articles'][:4]
     context['hit_tag'] = []
     # Я хз как нормально получить популряные тэги
     # ---------Мой костыль---------
@@ -37,7 +39,13 @@ def article_list(request):
             for tag in i.content_object.tags.all():
                 if tag not in context['hit_tag']:
                     context['hit_tag'].append(tag)  # из каждой статьи берем все тэги
-
+    paginator = Paginator(context['articles'], 3)
+    try:
+        context['articles'] = paginator.page(page)
+    except PageNotAnInteger:
+        context['articles'] = paginator.page(1)
+    except EmptyPage:
+        context['articles'] = paginator.page(paginator.num_pages)
     return TemplateResponse(request, "frontend/blog/list.html", context)
 
 
@@ -87,7 +95,6 @@ def event(request, slug):
 
     context['datetime_now'] = timezone.now()
 
-
     return TemplateResponse(request, "frontend/event/event.html", context)
 
 
@@ -124,6 +131,7 @@ def project_list(request):
     context = {}
     context['projects'] = Project.objects.all()
     return TemplateResponse(request, "frontend/project/list.html", context)
+
 
 def project(request):
     context = {}
