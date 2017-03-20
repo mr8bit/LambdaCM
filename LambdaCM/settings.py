@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'blog',
     'event',
     'team',
+    'hitcount',
     'meta',
     'filebrowser',
     'django.contrib.admin',
@@ -65,7 +66,6 @@ INSTALLED_APPS = [
     'mptt',
     'mathfilters',
     'django_ymap',
-    'hitcount',
     'django_gravatar',
     'colorfield',
 ]

@@ -48,6 +48,7 @@ def article_list(request, page=1):
         context['articles'] = paginator.page(paginator.num_pages)
     return TemplateResponse(request, "frontend/blog/list.html", context)
 
+from hitcount.views import HitCountMixin
 
 def article(request, slug):
     context = {}
@@ -55,6 +56,7 @@ def article(request, slug):
     context['meta'] = get_object_or_404(Article, slug=slug).as_meta(request)
     hit_count = HitCount.objects.get_for_object(context['article'])
     hit_count_response = HitCountMixin.hit_count(request, hit_count)
+
     return TemplateResponse(request, "frontend/blog/post.html", context)
 
 
