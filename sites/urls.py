@@ -1,5 +1,4 @@
 from django.conf.urls import url
-
 from . import views
 
 urlpatterns = [
@@ -7,11 +6,8 @@ urlpatterns = [
     url(r'^list$', views.article_list, name="article_list"),
     url(r'^posts/(?P<slug>[-\w]+)/$', views.article, name="article"),
     url(r'^list/page/(?P<page>[-\d]+)$', views.article_list, name="article_list_page"),
-
     url(r'^events$', views.event_list, name="event_list"),
     url(r'^events/(?P<slug>[-\w]+)/$', views.event, name="event"),
     url(r'^partners$', views.patners_list, name="patners_list"),
     url(r'^partners/(?P<slug>[-\w]+)/$', views.patner, name="partner"),
-    url(r'^projects$', views.project_list, name="project_list"),
-    url(r'^projects/(?P<slug>[-\w]+)/$', views.project, name="project"),
 ]
