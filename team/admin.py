@@ -1,11 +1,9 @@
 from django import forms
 from django.contrib import admin
-from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-from django.contrib.admin.options import BaseModelAdmin
-from .models import *
-from blog.models import SEO, Article
+
+from team.models import *
 
 
 class SocialNetwork(admin.TabularInline):
@@ -95,7 +93,7 @@ class SEOAdmin(admin.StackedInline):
     model = SEO
     extra = 0
     fields = (
-        'soe_description',
+        'seo_description',
         'key_words',
     )
     show_change_link = True
@@ -118,8 +116,10 @@ class ArticleAdmin(admin.StackedInline):
 
 class ProjectAdmin(admin.ModelAdmin):
     model = Project
+    prepopulated_fields = {'slug': ('name',)}
+
     fields = (
-        'name', 'git', 'description', 'members')
+        'name','sub_name','card_name','image' ,'git', 'description', 'members')
     inlines = (ArticleAdmin, SEOAdmin)
 
     class Media:
@@ -134,7 +134,7 @@ class PatnerAdmin(admin.ModelAdmin):
     model = Partner
     prepopulated_fields = {'slug': ('name',)}
     fieldsets = (
-        (None, {'fields': ('name', 'type_partner', 'slug','image',)}),
+        (None, {'fields': ('name', 'type_partner', 'slug', 'image',)}),
         ('Описание', {'fields': ('description',)}),
         ('Контакты', {'fields': ('address', 'site', 'phone')}),
     )
@@ -145,3 +145,4 @@ class PatnerAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Partner, PatnerAdmin)
+admin.site.register(Tag)

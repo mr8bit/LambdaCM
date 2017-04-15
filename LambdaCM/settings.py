@@ -12,14 +12,27 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 import os
 
+#########
+# PATHS #
+#########
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
+PROJECT_APP_PATH = os.path.dirname(os.path.abspath(__file__))
+PROJECT_APP = os.path.basename(PROJECT_APP_PATH)
+PROJECT_ROOT = os.path.dirname(PROJECT_APP_PATH)
 SECRET_KEY = '$sp7335nltx@k74mj0dr^rz79q$hhq!0g7@65o$*a_r+o2g(dx'
+
+# TODO: run gitBFG against settings.py to remove SECRET_KEY
+f = os.path.join(PROJECT_APP_PATH, "local_settings.py")
+if os.path.exists(f):
+    import sys
+    import imp
+
+    module_name = "%s.local_settings" % PROJECT_APP
+    module = imp.new_module(module_name)
+    module.__file__ = f
+    sys.modules[module_name] = module
+    exec(open(f, "rb").read())
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -32,7 +45,11 @@ SITE_ID = 1
 INSTALLED_APPS = [
     'jet.dashboard',
     'jet',
+    'blog',
+    'event',
     'team',
+    'hitcount',
+    'meta',
     'filebrowser',
     'django.contrib.admin',
     'django.contrib.sites',
@@ -43,17 +60,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ckeditor',
+    'disqus',
     'easy_thumbnails',
+    'sekizai',
     'mptt',
     'mathfilters',
     'django_ymap',
-    'hitcount',
     'django_gravatar',
     'colorfield',
-    'blog',
-    'meta',
-    'event',
-
 ]
 
 THUMBNAIL_HIGH_RESOLUTION = True
@@ -93,6 +107,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'sekizai.context_processors.sekizai',
+
             ],
         },
     },
@@ -165,6 +181,17 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'media/static'),)
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
+# FILEBROWSER
 FILEBROWSER_DIRECTORY = ''
 DIRECTORY = ''
+
+# Jet Dashboard
 JET_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
+
+# Meta SEO
+META_SITE_PROTOCOL = 'http'
+META_SITE_DOMAIN = '127.0.0.1:8000'
+
+# DISQUS
+DISQUS_API_KEY = 'UeDjaDYTh25DryXUdHdZVrnK9cqEqsCj74mBASgMdHLDEixownHyVfDVjUDMrd2z'
+DISQUS_WEBSITE_SHORTNAME = 'lambda'

@@ -1,15 +1,27 @@
-from django.db import models
+from ckeditor_uploader.fields import RichTextUploadingField
+from colorfield.fields import ColorField
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Group
+from django.db import models
 from django.utils.translation import gettext_lazy as _
 from filebrowser.fields import FileBrowseField
-from ckeditor_uploader.fields import RichTextUploadingField
+
+from blog.models import Article
+from event.models import Event
+
+# from team.models import Project
 
 social_network = (
     ('mdi-github-circle', 'GitHub'),
     ('mdi-twitter', 'Twitter'),
     ('mdi-gmail', 'Mail'),
-    ('mdi-vk', 'Vk'),  # mdi-vk - ставиться как иконка соц сети, а vk - видет пользователь
+    ('mdi-vk', 'VK'),  # mdi-vk - ставится как иконка соц сети, а vk - видет пользователь
     ('mdi-facebook', 'Facebook'),
+)
+
+type_partner = (
+    ('info', 'Информационный'),
+    ('finance', 'Финансовый'),
+    ('general', 'Генеральный'),
 )
 
 
@@ -19,7 +31,7 @@ class SocialNetwork(models.Model):
     user = models.ForeignKey('Member')
 
     def __str__(self):
-        return self.get_full_name
+        return Member.get_full_name(self.user)
 
     class Meta:
         verbose_name = "социальных сетей"
@@ -113,6 +125,10 @@ class Member(AbstractBaseUser):
 class Project(models.Model):
     name = models.CharField(max_length=300, verbose_name="Название")
     description = RichTextUploadingField(verbose_name="Описание")
+    #Добавил слоган для проекта
+    slug = models.SlugField(default='')
+    sub_name = models.CharField(max_length=300, verbose_name="Слоган", null=True, blank=True)
+    card_name = models.CharField(max_length=300, verbose_name="Название в списке", default='')
     members = models.ManyToManyField(Member, verbose_name="Участники проекта")
     git = models.URLField(verbose_name="Cсылка на Git", null=True, blank=True)
     image = FileBrowseField("Главное изображение", max_length=200, directory="images/", blank=True, null=True)
@@ -132,11 +148,11 @@ class Project(models.Model):
 class Partner(models.Model):
     name = models.CharField(max_length=300, verbose_name="Название партнера")
     slug = models.SlugField()
-    type_partner = models.CharField(max_length=300, verbose_name="Тип партнера")
+    type_partner = models.CharField(max_length=300, verbose_name="Тип партнера", choices=type_partner)
     description = RichTextUploadingField(verbose_name="Описание")
-    address = models.CharField(verbose_name="Адресс", max_length=500)
     site = models.CharField(verbose_name="Сайт", max_length=500)
-    phone = models.CharField(verbose_name="Телефон", max_length=500)
+    address = models.CharField(verbose_name="Адрес", max_length=500, blank=True, null=True)
+    phone = models.CharField(verbose_name="Телефон", max_length=500, blank=True, null=True)
     image = FileBrowseField("Изображение", max_length=200, directory="images/", blank=True, null=True)
 
     class Media:
@@ -149,3 +165,35 @@ class Partner(models.Model):
     class Meta:
         verbose_name = "Партнер"
         verbose_name_plural = "Партнеры"
+
+
+class Tag(models.Model):
+    name = models.CharField(max_length=300, verbose_name="Название")
+    color = ColorField(default='#FF0000')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Тэг"
+        verbose_name_plural = "Тэги"
+
+
+class SEO(models.Model):
+    seo_description = models.TextField(verbose_name="SEO Описание")
+    key_words = models.TextField(verbose_name="Ключ слова")
+    article = models.OneToOneField(Article, related_name='articles', null=True, blank=True)
+    event = models.OneToOneField(Event, related_name="events", null=True, blank=True)
+    project = models.OneToOneField(Project, related_name="projects", null=True, blank=True)
+
+    def __str__(self):
+        if self.article:
+            return "SEO для статьи " + self.article.title
+        elif self.event:
+            return "SEO для мероприятия" + self.event.title
+        else:
+            return "SEO для проекта" + self.project.name
+
+    class Meta:
+        verbose_name = "SEO"
+        verbose_name_plural = "SEO"
