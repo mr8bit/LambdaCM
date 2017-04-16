@@ -3,18 +3,18 @@
 from __future__ import unicode_literals
 
 import ckeditor_uploader.fields
-import colorfield.fields
-from django.db import migrations, models
 import django.db.models.deletion
 import filebrowser.fields
 import meta.models
+from django.conf import settings
+from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
+
     ]
 
     operations = [
@@ -24,11 +24,16 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=300, verbose_name='Название')),
                 ('sub_title', models.CharField(max_length=300, verbose_name='Слоган')),
-                ('short_description', ckeditor_uploader.fields.RichTextUploadingField(verbose_name='Короткое описание')),
+                (
+                'short_description', ckeditor_uploader.fields.RichTextUploadingField(verbose_name='Короткое описание')),
                 ('description', ckeditor_uploader.fields.RichTextUploadingField(verbose_name='Статья')),
                 ('datetime_create', models.DateTimeField(auto_now_add=True)),
                 ('datetime_updated', models.DateTimeField(auto_now=True)),
-                ('main_image', filebrowser.fields.FileBrowseField(blank=True, max_length=200, null=True, verbose_name='Главное изображение')),
+                ('author', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
+                                             to=settings.AUTH_USER_MODEL, verbose_name='Автор')),
+                ('type', models.BooleanField(default=False, verbose_name='Главная новость')),
+                ('main_image', filebrowser.fields.FileBrowseField(blank=True, max_length=200, null=True,
+                                                                  verbose_name='Главное изображение')),
                 ('post_in_vk', models.BooleanField(default=False, verbose_name='Постить в вк?')),
                 ('post_in_twitter', models.BooleanField(default=False, verbose_name='Постить в твиттер?')),
             ],
@@ -37,30 +42,5 @@ class Migration(migrations.Migration):
                 'verbose_name_plural': 'Посты',
             },
             bases=(meta.models.ModelMeta, models.Model),
-        ),
-        migrations.CreateModel(
-            name='SEO',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('soe_description', models.TextField(verbose_name='Seo Описание')),
-                ('key_words', models.TextField(verbose_name='Ключ слова')),
-                ('article', models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='articles', to='blog.Article')),
-            ],
-            options={
-                'verbose_name': 'SEO',
-                'verbose_name_plural': 'SEO',
-            },
-        ),
-        migrations.CreateModel(
-            name='Tag',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=300, verbose_name='Название')),
-                ('color', colorfield.fields.ColorField(default='#FF0000', max_length=10)),
-            ],
-            options={
-                'verbose_name': 'Тэг',
-                'verbose_name_plural': 'Тэги',
-            },
         ),
     ]
